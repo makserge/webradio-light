@@ -1,0 +1,63 @@
+Краткая инструкция для Hame MPR-A2 по установке OpenWRT 15.05
+Модули для звука и USB звуковухи уже внутри прошивки. Звуковуха любая китайская с кнопками, просто подключить ее к USB роутера.
+
+1. Распаковать openwrt-ramips-rt305x-mpr-a2-squashfs-sysupgrade.zip в любую папку и прошить
+
+openwrt-ramips-rt305x-mpr-a2-squashfs-sysupgrade.bin аналогично любой другой прошивке OpenWRT
+
+[code]mtd -r write /tmp/openwrt-ramips-rt305x-mpr-a2-squashfs-sysupgrade.bin firmware[/code]
+
+2.  Зайти через SSH под рутом без пароля на 192.168.1.1 и поставить недостающие пакеты
+
+[code]opkg update
+opkg install madplay-alsa uhttpd triggerhappy[/code]
+
+3. выложить содержимое приложенного архива radio.zip в корень файловой системы роутера
+4. поставить права доступа на скрипты
+
+[code]chmod 755 /etc/init.d/webradio
+chmod 755 /www/cgi-bin/webradio/items.cgi
+chmod 755 /www/cgi-bin/webradio/update.cgi
+chmod 755 /www/scripts/getstreammeta.sh
+chmod 755 /www/scripts/playback.sh
+chmod 755 /www/scripts/playstream.sh
+chmod 755 /www/scripts/stopstream.sh
+chmod 755 /www/scripts/streamcontrol.sh
+chmod 755 /www/scripts/webradio.sh[/code]
+
+
+5. включить triggerhappy и радио в автозагрузку
+
+[code]/etc/init.d/triggerhappy enable
+/etc/init.d/webradio enable
+[/code]
+
+6. настроить wifi  как клиент
+
+добавить в /etc/config/network
+
+[code]config interface wwan 
+	option proto 'dhcp'
+	option dns '8.8.8.8'[/code]
+
+
+в /etc/config/wireless поменять блок wifi-iface на 
+
+[code]config wifi-iface
+	option device radio0 
+        option network wwan 
+        option mode sta 
+        option ssid INTERNET 
+        option encryption psk2 
+        option key 'ваш-ключ-сети'[/code]
+
+7. перезагрузить роутер и если все сделано правильно, то по адресу
+
+[url="http://ваш-динамический-айпи-выданный-точкойдоступа-этому-роутеру"]http://ваш-динамически…йдоступа-этому-роутеру[/url] 
+
+в любом браузере (лучше всего Firefox)
+
+появится простой веб-интерфейс для управления радио и начнется воспроизведение первой станции из списка.
+
+Тыкая в элементы списка можно менять текущую станцию, с помощью кнопки внизу списка можно перейти к редактированию списка.
+В звуковухе кнопками Vol+ и Vol- можно переключать станции вперед-назад по кольцу. С помощью Mute на звуковухе можно остановить воспроизведение. При добавлении станции в список ее название будет автоматически добавлено для произнесения робобабой перед началом воспроизведения станции (поддерживается русский и английский языки).

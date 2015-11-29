@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Web radio control panel</title>
+		<link rel="stylesheet" type="text/css" href="styles/cp.css">
+		<script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript" src="scripts/common.js"></script>
+	</head>
+	<body>
+		<div class="title" id="title">Webradio</div>
+
+		<div class="content">
+			<div class="network_track_title subtitle">
+				<span id="network_track_title">Track: n/a</span>
+				<span><img class="img" onclick="playItemByDirection('prev')" src="img/previous.png"> <img class="img" onclick="playItemByDirection('next')" src="img/next.png"></span>
+			</div>
+			<div class="subtitle">Streams</div>
+			<div class="list" id="network_list"></div>
+			<form>
+				<input class="button" type="button" id="show_manage_streams_button" value="Manage streams">
+			</form>
+			<form class="form" id="add_stream_block" style="display:none">
+				<div class="subtitle">Add stream</div>
+				<div class="form_item">
+					<div class="label">Title</div>
+					<input type="text" class="input_title" id="stream_title">
+					<p class="clear" />
+				</div>
+				<div class="form_item">
+					<div class="label">URL</div>
+					<input type="text" class="input_url" id="stream_url">
+					<p class="clear" />
+				</div>
+
+				<input class="button" type="button" id="add_stream_button" value="Add">				
+				<input class="button" type="button" id="cancel_add_stream_button" value="Cancel">	
+			</form>
+		</div>
+	</body>
+</html>
